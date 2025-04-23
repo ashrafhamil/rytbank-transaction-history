@@ -33,11 +33,32 @@ const TransactionHistoryScreen = ({ navigation }: Props) => {
         }
     }
 
+    // const onRefresh = useCallback(() => {
+    //     setRefreshing(true)
+    //     setTimeout(() => {
+    //         setTransactions([...mockTransactions]) // Simulate reload
+    //         setRefreshing(false)
+    //     }, 1000)
+    // }, [])
+
     const onRefresh = useCallback(() => {
         setRefreshing(true)
+
         setTimeout(() => {
-            setTransactions([...mockTransactions]) // Simulate reload
-            setRefreshing(false)
+            try {
+                // Simulate a fetch or data load
+                const data = mockTransactions
+
+                if (!data || data.length === 0) {
+                    throw new Error('Unable to fetch transactions.')
+                }
+
+                setTransactions([...data])
+            } catch (error: any) {
+                Alert.alert('Fetch Error', error.message || 'Something went wrong while loading transactions.')
+            } finally {
+                setRefreshing(false)
+            }
         }, 1000)
     }, [])
 
